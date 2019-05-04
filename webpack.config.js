@@ -1,13 +1,18 @@
 const path = require('path')
 const htmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
+const webpack = require('webpack')
+
+const APP_PATH = path.resolve(__dirname, 'src')
+const BUILD_PATH = path.resolve(__dirname, 'dist')
 
 module.exports = {
   // entry: './src/index.js',
-  entry: {
-    app: './src/index.js',
-    print: './src/print.js'
-  },
+  mode: 'development',
+  entry: [
+    'webpack-hot-middleware/client?reload=true&noINfo=true',
+    APP_PATH
+  ],
   devtool: 'inline-source-map',
   devServer: {
     contentBase: './dist'
@@ -15,26 +20,28 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new htmlWebpackPlugin({
-      title: 'Output Management'
-    })
+      title: 'Output hotMiddleware'
+    }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
   output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: 'bundle.js',
+    path: BUILD_PATH,
+    publicPath:'/'
   },
-  // module: {
-  //   rules: [
-  //     {
-  //       test: /\.css$/,
-  //       use: [
-  //         'style-loader',
-  //         'css-loader'
-  //       ]
-  //     },
-  //     {
-  //       test: /\.(png|svg|jpg|gif)$/,
-  //       use: ['file-loader']
-  //     }
-  //   ]
-  // }
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: ['file-loader']
+      }
+    ]
+  }
 }
