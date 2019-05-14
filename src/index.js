@@ -2,15 +2,34 @@ import _ from 'lodash'
 import './css/stytle.css'
 import {cube} from './utils/math'
 // import Icon from './image/001.jpg'
-
+const getData = ({id}) => {
+  const query = `
+    query GetUser($id: ID!){
+      getUser (id:$id) {
+        id
+        username
+        age
+      }
+    }`
+  const variables = {id}
+  fetch('./graphql',{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accpect': 'application/json',
+    },
+    body: JSON.stringify({query, variables})
+  }).then(res => res.json()).then(json => {
+    console.log(json)
+  })
+}
 const component = () => {
   let element = document.createElement('div')
   let btn = document.createElement('button')
   element.innerHTML = _.join(["hello webpack!", `5 cube is equal to ${cube(5)}`], ' ')
-  // btn.innerHTML = 'click me';
-  // btn.onclick = print.printMe()
-  // btn.onclick = print.printMe
-  // element.appendChild(btn)
+  btn.innerHTML = '获取数据'
+  btn.onclick = () => getData({id:1})
+  element.appendChild(btn)
   // element.classList.add('hello')
   // let image = new Image(500, 500)
   // image.src = Icon
