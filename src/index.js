@@ -2,16 +2,16 @@ import _ from 'lodash'
 import './css/stytle.css'
 import {cube} from './utils/math'
 // import Icon from './image/001.jpg'
-const getData = ({id}) => {
+const getData = ({id,username}) => {
   const query = `
-    query GetUser($id: ID!){
-      getUser (id:$id) {
-        id
+    mutation UpdateUser($id: ID!, $username: String){
+      UpdateUser(id:$id, input:{
+        username:$username
+      }){
         username
-        age
       }
     }`
-  const variables = {id}
+  const variables = {id,username}
   fetch('./graphql',{
     method: 'POST',
     headers: {
@@ -28,7 +28,7 @@ const component = () => {
   let btn = document.createElement('button')
   element.innerHTML = _.join(["hello webpack!", `5 cube is equal to ${cube(5)}`], ' ')
   btn.innerHTML = '获取数据'
-  btn.onclick = () => getData({id:1})
+  btn.onclick = () => getData({id:1,username:'liuyanghao'})
   element.appendChild(btn)
   // element.classList.add('hello')
   // let image = new Image(500, 500)
