@@ -7,11 +7,12 @@ const schema = buildSchema(`
   type User {
     id: ID
     username: String
+    password: String
     age: Int
   }
   type Query {
     hero: String
-    getUser(id: ID!): User
+    getUser(username: String, password: String): String
     getAllUser: [User]
   }
   type Mutation {
@@ -24,11 +25,13 @@ const user = [
     {
         id: '1',
         username: 'wen',
+        password: '123456',
         age: 12
     },
     {
         id: '2',
-        username: 'wen',
+        username: 'rui',
+        password: '123456',
         age: 12
     }
 ]
@@ -36,8 +39,13 @@ const root  = {
     hero () {
         return 'I am iron man'
     },
-    getUser ({id}) {
-        return user.find(item => item.id === id)
+    getUser ({username, password}) {
+      let Message = 'fail'
+      if(user.some(item => item.username === username))
+      {
+        Message = user.find(item => item.username === username).password === password ? 'success' : Message
+      }
+      return Message
     },
     getAllUser () {
         return user

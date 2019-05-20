@@ -3,14 +3,18 @@ import './css/stytle.css'
 import {cube} from './utils/math'
 // import Icon from './image/001.jpg'
 const getData = ({id,username}) => {
-  const query = `
-    mutation UpdateUser($id: ID!, $username: String){
-      UpdateUser(id:$id, input:{
-        username:$username
-      }){
-        username
-      }
-    }`
+  // const query = `
+  //   mutation UpdateUser($id: ID!, $username: String){
+  //     UpdateUser(id:$id, input:{
+  //       username:$username
+  //     }){
+  //       username
+  //     }
+  //   }`
+  const query =  `
+  query getUser($username:String, $password: String) {
+    getUser(username:$username, password:$password)
+  } `
   const variables = {id,username}
   fetch('./graphql',{
     method: 'POST',
